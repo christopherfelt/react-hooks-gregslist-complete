@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const initialState = {
     cars: [],
+    car: null,
     error: null,
     loading: true,
 }
@@ -36,10 +37,25 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
+    async function getCar(carId){
+        try {
+            let res = await api.get("cars/"+carId)
+            dispatch({
+                type: "GET_CAR",
+                payload: res.data,
+            });
+        } catch (error) {
+            dispatch({
+                type: "CAR_ERROR",
+                payload: error,
+            })
+        }
+    }
+
     async function createCar(carData){
         
         try {
-            let res = await api.get("cars/");
+            let res = await api.post("cars/", carData);
             getCars();
         } catch (error) {
             dispatch({
@@ -56,6 +72,7 @@ export const GlobalProvider = ({children}) => {
                 error: state.error,
                 loading: state.loading,
                 getCars,
+                getCar,
                 createCar
             }}>
                 {children}
