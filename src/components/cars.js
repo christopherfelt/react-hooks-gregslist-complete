@@ -1,10 +1,10 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {createFactory, useContext, useEffect, useState} from 'react';
 import {GlobalContext} from "../context/GlobalState";
 import Car from "./car";
 
 const Cars = () => {
 
-    const { cars, getCars } = useContext(GlobalContext);
+    const { cars, getCars, createCar } = useContext(GlobalContext);
     const [allValues, setAllValues] = useState({
         model: '',
         make: '',
@@ -18,15 +18,23 @@ const Cars = () => {
         setAllValues({...allValues, [e.target.name]:e.target.value})
     }
 
+    const submitHandler = e => {
+        e.preventDefault();
+        console.log("test")
+        createCar(allValues);
+    }
+
+
 
     useEffect(() => {
         getCars();
+        createCar();
     }, [] )
 
 
     return (
         <div>
-            <form className="form-inline m-2">
+            <form className="form-inline m-2" onSubmit={submitHandler} >
                 <div className="form-group m-2">
                     <label htmlFor="model">Model: </label>
                     <input type="text" id="model" name="model" onChange={changeHandler}/>
@@ -51,7 +59,7 @@ const Cars = () => {
                     <label htmlFor="year">Year:  </label>
                     <input type="integer"/>
                 </div>
-                <button className="btn btn-secondary"> Submit </button>
+                <button className="btn btn-secondary" type="submit" > Submit </button>
             </form>
             <div className="card-columns">
                 {cars.map((car) => (

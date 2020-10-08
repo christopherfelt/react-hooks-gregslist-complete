@@ -36,7 +36,18 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
-    
+    async function createCar(carData){
+        
+        try {
+            let res = await api.get("cars/");
+            getCars();
+        } catch (error) {
+            dispatch({
+                type: "CAR_ERROR",
+                payload: error,
+            })
+        }
+    }
 
     return (
         <GlobalContext.Provider
@@ -45,6 +56,7 @@ export const GlobalProvider = ({children}) => {
                 error: state.error,
                 loading: state.loading,
                 getCars,
+                createCar
             }}>
                 {children}
         </GlobalContext.Provider>

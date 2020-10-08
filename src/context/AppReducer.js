@@ -6,6 +6,12 @@ export default (state, action) => {
                 loading: false,
                 cars: action.payload
             };
+        case "POST_CARS":
+            return {
+                ...state,
+                loading: false,
+                cars: action.payload
+            }
         default:
             return state;
     }
