@@ -15,13 +15,13 @@ function App() {
     <Router>
       <GlobalProvider>
         <div className="App">
-          <nav>
+          {/* <nav>
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="/cardetail/hello">Car Detail</Link></li>
               <li><a href="/contact">Contact</a></li>
             </ul>
-          </nav>
+          </nav> */}
           <Switch>
             <Route path="/" exact component={Homepage} />
             <Route path="/cardetail/:carId" component={CarDetail}/>

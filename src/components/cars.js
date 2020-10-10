@@ -1,4 +1,4 @@
-import React, {createFactory, useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {GlobalContext} from "../context/GlobalState";
 import Car from "./car";
 

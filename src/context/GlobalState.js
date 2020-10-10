@@ -3,8 +3,8 @@ import AppReducer from './AppReducer'
 import axios from 'axios';
 
 const initialState = {
+    car: {},
     cars: [],
-    car: null,
     error: null,
     loading: true,
 }
@@ -39,7 +39,7 @@ export const GlobalProvider = ({children}) => {
 
     async function getCar(carId){
         try {
-            let res = await api.get("cars/"+carId)
+            let res = await api.get("cars/"+carId+"/")
             dispatch({
                 type: "GET_CAR",
                 payload: res.data,
@@ -68,6 +68,7 @@ export const GlobalProvider = ({children}) => {
     return (
         <GlobalContext.Provider
             value = {{
+                car: state.car,
                 cars: state.cars,
                 error: state.error,
                 loading: state.loading,
