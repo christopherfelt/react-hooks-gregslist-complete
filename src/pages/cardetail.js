@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {GlobalContext} from "../context/GlobalState"
 
+import Item from "../components/item"
+
 const CarDetail = ({match:{params:{carId}}}) => {
 
     const initialState = {
@@ -47,7 +49,7 @@ const CarDetail = ({match:{params:{carId}}}) => {
                 <div className="col-8 d-flex justify-content-center">
                     <div className="">
                         <img src="//placehold.it/200X200" className="img-fluid" alt=""></img>
-                        <div className="m-2">
+                        {/* <div className="m-2">
                             <h6 className="d-inline mr-2">Description:</h6>
                             {editValues.descriptionEdit ? 
                             <div className="d-inline">
@@ -61,7 +63,20 @@ const CarDetail = ({match:{params:{carId}}}) => {
                                 <button className="btn btn-info btn-sm d-inline m-1" name="descriptionEdit" onClick={editHandler}>Edit</button>
                             </div>
                             }
-                        </div>
+                        </div> */}
+
+                        <Item edit={editValues.descriptionEdit} itemName={"Description"}
+                            itemValue={car.description} inputValue={allValues.description} 
+                            onEditEvent={editHandler} onChangeEvent={changeHandler}/>
+
+                        <Item edit={editValues.makeDescription} itemName={"Make"}
+                            itemValue={car.make} inputValue={allValues.make}
+                            onEditEvent={editHandler} onChangeEvent={changeHandler} />
+
+                        <Item edit={editValues.model} itemName={"Model"}
+                            itemValue={car.model} inputValue={allValues.model}
+                            onEditEvent={editHandler} onChangeEvent={changeHandler} />
+
                         <div>
                             <h6 className="d-inline mr-2">Make:</h6>
                             <p className="d-inline">{car.make}</p>
