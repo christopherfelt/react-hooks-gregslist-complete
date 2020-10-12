@@ -1,17 +1,23 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {GlobalContext} from "../context/GlobalState"
+import {useHistory} from "react-router-dom"
+import "../components/carStyle.css"
 
 import Item from "../components/item"
 
 const CarDetail = ({match:{params:{carId}}}) => {
 
-    const {car, getCar, updateCar} = useContext(GlobalContext);
+    const {car, getCar, updateCar, deleteCar} = useContext(GlobalContext);
 
     useEffect(() => {
         getCar(carId);
+        console.log(car)
     }, [])
 
+    const history = useHistory();
+
     const initialState = {
+        id: car.id,
         model: car.model,
         make: car.make,
         description: car.description,
@@ -32,52 +38,43 @@ const CarDetail = ({match:{params:{carId}}}) => {
     const [allValues, setAllValues] = useState(initialState);
     const [editValues, setEditValues] = useState(editState);
 
-
-
     const changeHandler = e => {
         setAllValues({...allValues, [e.target.name]: e.target.value})
     }
 
     const editHandler = e => {
         setEditValues({...editValues, [e.target.name]:!editValues[e.target.name]})
-        console.log("editHandler-Parent")
     }
 
     const submitHandler = e => {
+        setEditValues({...editValues, [e.target.name]:!editValues[e.target.name]})
         updateCar(allValues)
-        console.log("submitHandler - parent")
     }
 
-
-
-
+    const deleteHandler = e => {
+        history.push("/")
+        deleteCar(carId)
+    }
 
     return (
         
         <div className="container">
             <div className="row m-3">
                 <div className="col-8 d-flex justify-content-center">
-                    <div className="">
-                        <img src="//placehold.it/200X200" className="img-fluid" alt=""></img>
-                        {/* <div className="m-2">
-                            <h6 className="d-inline mr-2">Description:</h6>
-                            {editValues.descriptionEdit ? 
-                            <div className="d-inline">
-                                <input type="text" id="description" name="model" value={allValues.model} onChange={changeHandler}/>
-                                <button className="btn btn-info btn-sm d-inline m-1">Submit</button>
-                                <button className="btn btn-danger btn-sm d-inline m-1" name="descriptionEdit" onClick={editHandler}>Cancel</button>
+                    <div className="border text-left p-2">
+                        <div className="d-flex justify-content-between">
+                            <div>
+                                <img src="//placehold.it/200X200" className="img-fluid" alt=""></img>
                             </div>
-                            :
-                            <div className="d-inline">
-                                <p className="d-inline">{car.description}</p>
-                                <button className="btn btn-info btn-sm d-inline m-1" name="descriptionEdit" onClick={editHandler}>Edit</button>
+                            <div className="align-self-center button">
+                                <button className="btn btn-danger" onClick={deleteHandler}>Delete</button>
                             </div>
-                            }
-                        </div> */}
+                        </div>
 
                         <Item edit={editValues.descriptionEdit} itemName={"Description"}
                             itemValue={car.description} inputValue={allValues.description} 
-                            onEditEvent={editHandler} onChangeEvent={changeHandler}/>
+                            onEditEvent={editHandler} onChangeEvent={changeHandler}
+                            onSubmitEvent={submitHandler}/>
 
                         <Item edit={editValues.makeEdit} itemName={"Make"}
                             itemValue={car.make} inputValue={allValues.make}
@@ -95,11 +92,6 @@ const CarDetail = ({match:{params:{carId}}}) => {
                             itemValue={car.year} inputValue={allValues.year}
                             onEditEvent={editHandler} onChangeEvent={changeHandler}/>
 
-                        {/* <div>
-                            <button className="btn btn-info d-inline m-1" onClick={editHandler}>Edit</button>
-                            <button className="btn btn-danger d-inline m-1">Danger</button>
-                        </div> */}
-                        
                     </div>
                 </div>
             </div>

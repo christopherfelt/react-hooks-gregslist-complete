@@ -7,6 +7,7 @@ const initialState = {
     cars: [],
     error: null,
     loading: true,
+    // ...carState
 }
 
 let api = axios.create({
@@ -68,7 +69,19 @@ export const GlobalProvider = ({children}) => {
     async function updateCar(carData){
 
         try {
-            await api.post("cars/"+carData.Id+"/")
+            await api.put("cars/"+carData.id+"/", carData)
+            getCars();
+        } catch (error) {
+            dispatch({
+                type:"CAR_ERROR",
+                payload: error,
+            })
+        }
+    }
+
+    async function deleteCar(carId){
+        try {
+            await api.delete("cars/"+carId+"/")
             getCars();
         } catch (error) {
             dispatch({
@@ -88,7 +101,8 @@ export const GlobalProvider = ({children}) => {
                 getCars,
                 getCar,
                 createCar,
-                updateCar
+                updateCar,
+                deleteCar
             }}>
                 {children}
         </GlobalContext.Provider>

@@ -1,0 +1,12 @@
+.button {
+    opacity: 0.1;
+    transition: .5s;
+}
+
+.button:hover {
+    opacity: 1;
+}
+
+.item {
+    width: 600px;
+}
