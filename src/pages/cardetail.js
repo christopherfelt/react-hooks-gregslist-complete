@@ -5,13 +5,19 @@ import Item from "../components/item"
 
 const CarDetail = ({match:{params:{carId}}}) => {
 
+    const {car, getCar, updateCar} = useContext(GlobalContext);
+
+    useEffect(() => {
+        getCar(carId);
+    }, [])
+
     const initialState = {
-        model: '',
-        make: '',
-        description: '',
-        imgUrl: '',
-        price: 0,
-        year: 0,
+        model: car.model,
+        make: car.make,
+        description: car.description,
+        imgUrl: car.imgUrl,
+        price: car.price,
+        year: car.year,
     }
 
     const editState = {
@@ -23,9 +29,9 @@ const CarDetail = ({match:{params:{carId}}}) => {
         yearEdit: false,
     }
 
-    const {car, getCar} = useContext(GlobalContext);
     const [allValues, setAllValues] = useState(initialState);
     const [editValues, setEditValues] = useState(editState);
+
 
 
     const changeHandler = e => {
@@ -34,12 +40,16 @@ const CarDetail = ({match:{params:{carId}}}) => {
 
     const editHandler = e => {
         setEditValues({...editValues, [e.target.name]:!editValues[e.target.name]})
+        console.log("editHandler-Parent")
+    }
+
+    const submitHandler = e => {
+        updateCar(allValues)
+        console.log("submitHandler - parent")
     }
 
 
-    useEffect(() => {
-        getCar(carId);
-    }, [])
+
 
 
     return (
@@ -69,34 +79,26 @@ const CarDetail = ({match:{params:{carId}}}) => {
                             itemValue={car.description} inputValue={allValues.description} 
                             onEditEvent={editHandler} onChangeEvent={changeHandler}/>
 
-                        <Item edit={editValues.makeDescription} itemName={"Make"}
+                        <Item edit={editValues.makeEdit} itemName={"Make"}
                             itemValue={car.make} inputValue={allValues.make}
-                            onEditEvent={editHandler} onChangeEvent={changeHandler} />
+                            onEditEvent={editHandler} onChangeEvent={changeHandler}/>
 
-                        <Item edit={editValues.model} itemName={"Model"}
+                        <Item edit={editValues.modelEdit} itemName={"Model"}
                             itemValue={car.model} inputValue={allValues.model}
-                            onEditEvent={editHandler} onChangeEvent={changeHandler} />
+                            onEditEvent={editHandler} onChangeEvent={changeHandler}/>
 
-                        <div>
-                            <h6 className="d-inline mr-2">Make:</h6>
-                            <p className="d-inline">{car.make}</p>
-                        </div>
-                        <div className="m-2">
-                            <h6 className="d-inline mr-2">Model:</h6>
-                            <p className="d-inline">{car.model}</p>
-                        </div>
-                        <div className="m-2">
-                            <h6 className="d-inline mr-2">Price:</h6>
-                            <p className="d-inline">{car.price}</p>
-                        </div>
-                        <div className="m-2">
-                            <h6 className="d-inline mr-2">Year:</h6>
-                            <p className="d-inline">{car.year}</p>
-                        </div>
-                        <div>
+                        <Item edit={editValues.priceEdit} itemName={"Price"}
+                            itemValue={car.price} inputValue={allValues.price}
+                            onEditEvent={editHandler} onChangeEvent={changeHandler}/>
+
+                        <Item edit={editValues.yearEdit} itemName={"Year"}
+                            itemValue={car.year} inputValue={allValues.year}
+                            onEditEvent={editHandler} onChangeEvent={changeHandler}/>
+
+                        {/* <div>
                             <button className="btn btn-info d-inline m-1" onClick={editHandler}>Edit</button>
                             <button className="btn btn-danger d-inline m-1">Danger</button>
-                        </div>
+                        </div> */}
                         
                     </div>
                 </div>

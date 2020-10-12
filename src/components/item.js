@@ -6,12 +6,18 @@ const Item = (props) => {
         itemValue, inputValue, 
         onEditEvent, onChangeEvent} = props
 
-    const handleEdit = event => {
-        onEditEvent(event)
-    }
-
+    
     const handleChange = event => {
         onChangeEvent(event)
+    }
+    const handleEdit = event => {
+        onEditEvent(event)
+        console.log("editHandler-Child")
+    }
+
+    const handleSubmit = event => {
+        // onSubmitEvent(event)
+        console.log("handle submit - child")
     }
 
     return (
@@ -23,12 +29,14 @@ const Item = (props) => {
                 <div className="d-inline">
                     <input type="text" name={itemName} value={inputValue} onChange={handleChange}/>
                     <button className="btn btn-info btn-sm d-inline m-1">Submit</button>
-                    <button className="btn btn-danger btn-sm d-inline m-1" name={itemName.toLowerCase()+"Edit"} onClick={handleEdit}>Cancel</button>
+                    <button className="btn btn-danger btn-sm d-inline m-1" 
+                    name={itemName.toLowerCase()+"Edit"} onClick={handleEdit}>Cancel</button>
                 </div>
                 :
                 <div className="d-inline">
                     <p className="d-inline">{itemValue}</p>
-                    <button className="btn btn-info btn-sm d-inline m-1" name={itemName.toLowerCase()+"Edit"} onClick={handleEdit}>Edit</button>
+                    <button className="btn btn-info btn-sm d-inline m-1" 
+                    name={itemName.toLowerCase()+"Edit"} onClick={handleEdit}>Edit</button>
                 </div>
                 }
             </div>
