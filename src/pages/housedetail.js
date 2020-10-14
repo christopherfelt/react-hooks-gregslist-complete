@@ -1,40 +1,44 @@
 import React, { useContext, useEffect, useState } from "react";
-import { GlobalContext } from "../context/GlobalState";
+import { HouseContext } from "../context/HouseState";
 import { useHistory } from "react-router-dom";
 import "../components/carStyle.css";
 
 import Item from "../components/item";
 
-const CarDetail = ({
+const HouseDetail = ({
   match: {
-    params: { carId },
+    params: { houseId },
   },
 }) => {
-  const { car, getCar, updateCar, deleteCar } = useContext(GlobalContext);
+  const { getHouse } = useContext(HouseContext);
 
   useEffect(() => {
-    getCar(carId);
+    getHouse(houseId);
   }, []);
+
+  const { house, updateHouse, deleteHouse } = useContext(HouseContext);
 
   const history = useHistory();
 
   const initialState = {
-    id: car.id,
-    model: car.model,
-    make: car.make,
-    description: car.description,
-    imgUrl: car.imgUrl,
-    price: car.price,
-    year: car.year,
+    id: house.id,
+    year: house.year,
+    bedrooms: house.bedrooms,
+    bathrooms: house.bathrooms,
+    description: house.description,
+    imgUrl: house.description,
+    price: house.price,
+    levels: house.levels,
   };
 
   const editState = {
-    modelEdit: false,
-    makeEdit: false,
+    yearEdit: false,
+    bedroomsEdit: false,
+    bathroomsEdit: false,
     descriptionEdit: false,
     imgUrlEdit: false,
     priceEdit: false,
-    yearEdit: false,
+    levelsEdit: false,
   };
 
   const [allValues, setAllValues] = useState(initialState);
@@ -56,12 +60,12 @@ const CarDetail = ({
       ...editValues,
       [e.target.name]: !editValues[e.target.name],
     });
-    updateCar(allValues);
+    updateHouse(allValues);
   };
 
   const deleteHandler = (e) => {
-    history.push("/");
-    deleteCar(carId);
+    history.push("/houses");
+    deleteHouse(houseId);
   };
 
   return (
@@ -87,7 +91,7 @@ const CarDetail = ({
             <Item
               edit={editValues.descriptionEdit}
               itemName={"Description"}
-              itemValue={car.description}
+              itemValue={house.description}
               inputValue={allValues.description}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
@@ -95,19 +99,19 @@ const CarDetail = ({
             />
 
             <Item
-              edit={editValues.makeEdit}
-              itemName={"Make"}
-              itemValue={car.make}
-              inputValue={allValues.make}
+              edit={editValues.bedroomsEdit}
+              itemName={"bedrooms"}
+              itemValue={house.bedrooms}
+              inputValue={allValues.bedrooms}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
             />
 
             <Item
-              edit={editValues.modelEdit}
-              itemName={"Model"}
-              itemValue={car.model}
-              inputValue={allValues.model}
+              edit={editValues.bathroomsEdit}
+              itemName={"bathrooms"}
+              itemValue={house.bathrooms}
+              inputValue={allValues.bathrooms}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
             />
@@ -115,7 +119,7 @@ const CarDetail = ({
             <Item
               edit={editValues.priceEdit}
               itemName={"Price"}
-              itemValue={car.price}
+              itemValue={house.price}
               inputValue={allValues.price}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
@@ -124,7 +128,7 @@ const CarDetail = ({
             <Item
               edit={editValues.yearEdit}
               itemName={"Year"}
-              itemValue={car.year}
+              itemValue={house.year}
               inputValue={allValues.year}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
@@ -136,4 +140,4 @@ const CarDetail = ({
   );
 };
 
-export default CarDetail;
+export default HouseDetail;

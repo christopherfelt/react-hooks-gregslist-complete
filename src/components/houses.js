@@ -1,22 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
-import { GlobalContext } from "../context/GlobalState";
-import Car from "./car";
+import { HouseContext } from "../context/HouseState";
+import House from "./house";
 import ItemInput from "./newItemInput";
 
-const Cars = () => {
+const Houses = () => {
   const initialState = {
-    model: "",
-    make: "",
+    year: 0,
+    bedrooms: 0,
+    bathrooms: 0,
     description: "",
     imgUrl: "",
     price: 0,
-    year: 0,
+    levels: 0,
   };
-  const { cars, getCars, createCar } = useContext(GlobalContext);
+  const { houses, getHouses, createHouse } = useContext(HouseContext);
   const [allValues, setAllValues] = useState(initialState);
 
   useEffect(() => {
-    getCars();
+    getHouses();
   }, []);
 
   const changeHandler = (e) => {
@@ -25,7 +26,7 @@ const Cars = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    createCar(allValues);
+    createHouse(allValues);
     setAllValues({ ...initialState });
   };
 
@@ -33,21 +34,19 @@ const Cars = () => {
     <div>
       <form className="form-inline m-2" onSubmit={submitHandler}>
         <ItemInput
-          label={"Model"}
-          inputType={"text"}
-          inputName={"model"}
-          inputValue={allValues.model}
+          label={"Year"}
+          inputType={"integer"}
+          inputName={"year"}
+          inputValue={allValues.year}
           onChangeEvent={changeHandler}
         />
-
         <ItemInput
-          label={"Make"}
-          inputType={"text"}
-          inputName={"make"}
-          inputValue={allValues.make}
+          label={"Bedrooms"}
+          inputType={"integer"}
+          inputName={"bedrooms"}
+          inputValue={allValues.bedrooms}
           onChangeEvent={changeHandler}
         />
-
         <ItemInput
           label={"Description"}
           inputType={"text"}
@@ -55,7 +54,6 @@ const Cars = () => {
           inputValue={allValues.description}
           onChangeEvent={changeHandler}
         />
-
         <ItemInput
           label={"Image Url"}
           inputType={"text"}
@@ -63,7 +61,6 @@ const Cars = () => {
           inputValue={allValues.imgUrl}
           onChangeEvent={changeHandler}
         />
-
         <ItemInput
           label={"Price"}
           inputType={"integer"}
@@ -71,26 +68,24 @@ const Cars = () => {
           inputValue={allValues.price}
           onChangeEvent={changeHandler}
         />
-
         <ItemInput
-          label={"Year"}
+          label={"Level"}
           inputType={"integer"}
-          inputName={"year"}
-          inputValue={allValues.year}
+          inputName={"levels"}
+          inputValue={allValues.levels}
           onChangeEvent={changeHandler}
         />
-
         <button className="btn btn-secondary" type="submit">
           Submit
         </button>
       </form>
       <div className="card-columns">
-        {cars.map((car) => (
-          <Car key={car.id} car={car} />
+        {houses.map((house) => (
+          <House key={house.id} house={house} />
         ))}
       </div>
     </div>
   );
 };
 
-export default Cars;
+export default Houses;
