@@ -65,8 +65,9 @@ export const HouseProvider = ({ children }) => {
 
   async function updateHouse(houseData) {
     try {
-      await api.put("houses/" + houseData.id + "/");
+      await api.put("houses/" + houseData.id, houseData);
       getHouses();
+      getHouse(houseData.id);
     } catch (error) {
       dispatch({
         type: "HOUSE_ERROR",
@@ -77,7 +78,7 @@ export const HouseProvider = ({ children }) => {
 
   async function deleteHouse(houseId) {
     try {
-      await api.delete("houses/" + houseId + "/");
+      await api.delete("houses/" + houseId);
       getHouses();
     } catch (error) {
       dispatch({
