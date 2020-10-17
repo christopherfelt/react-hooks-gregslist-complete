@@ -15,7 +15,7 @@ import { HouseProvider } from "./context/HouseState";
 import { JobProvider } from "./context/JobState";
 
 function App() {
-  const { loginWithRedirect } = useAuth0();
+  const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
 
   return (
     <Router>
@@ -46,12 +46,23 @@ function App() {
                     </li>
                   </ul>
                 </div>
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => loginWithRedirect()}
-                >
-                  Log In
-                </button>
+                {isAuthenticated && <h5>User: {user.name}</h5>}
+                {!isAuthenticated && (
+                  <button
+                    className="btn btn-secondary mx-2"
+                    onClick={() => loginWithRedirect()}
+                  >
+                    Log In
+                  </button>
+                )}
+                {isAuthenticated && (
+                  <button
+                    className="btn btn-danger mx-2"
+                    onClick={() => logout({ returnTo: window.location.origin })}
+                  >
+                    Log Out
+                  </button>
+                )}
               </nav>
               <Switch>
                 <Route path="/" exact component={Homepage} />

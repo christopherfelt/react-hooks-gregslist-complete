@@ -8,6 +8,7 @@ const DOMAIN = process.env.REACT_APP_DOMAIN;
 // To get the environment variable to work with auth0 client id needs to be
 // CLIENTID
 const CLIENT_ID = process.env.REACT_APP_CLIENTID;
+const AUDIENCE = process.env.REACT_APP_AUDIENCE;
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,6 +16,8 @@ ReactDOM.render(
       domain={DOMAIN}
       clientId={CLIENT_ID}
       redirectUri={window.location.origin}
+      audience={AUDIENCE}
+      scope="read:current_user"
     >
       <App />
     </Auth0Provider>

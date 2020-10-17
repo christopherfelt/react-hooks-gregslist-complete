@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import HouseAppReducer from "./HouseAppReducer";
 import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const initialState = {
   house: {},
@@ -20,6 +21,8 @@ export const HouseContext = createContext(initialState);
 
 export const HouseProvider = ({ children }) => {
   const [state, dispatch] = useReducer(HouseAppReducer, initialState);
+
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   async function getHouses() {
     try {
@@ -53,8 +56,23 @@ export const HouseProvider = ({ children }) => {
 
   async function createHouse(houseData) {
     try {
-      await api.post("houses/", houseData);
-      getHouses();
+      if (isAuthenticated) {
+        console.log(houseData);
+        const token = await getAccessTokenSilently();
+        const options = {
+          method: "post",
+          url: "http://127.0.0.1:8000/api/house/create",
+          data: houseData,
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-type": "application/json",
+          },
+        };
+        await axios(options);
+        getHouses();
+      } else {
+        console.log("You are not authenticated to make this request");
+      }
     } catch (error) {
       dispatch({
         type: "HOUSE_ERROR",
@@ -65,9 +83,24 @@ export const HouseProvider = ({ children }) => {
 
   async function updateHouse(houseData) {
     try {
-      await api.put("houses/" + houseData.id, houseData);
-      getHouses();
-      getHouse(houseData.id);
+      if (isAuthenticated) {
+        console.log(houseData);
+        const token = await getAccessTokenSilently();
+        const options = {
+          method: "put",
+          url: "http://127.0.0.1:8000/api/house/updateordelete",
+          data: houseData,
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-type": "application/json",
+          },
+        };
+        await axios(options);
+        getHouse(houseData.id);
+        getHouses();
+      } else {
+        console.log("You are not authenticated to make this request");
+      }
     } catch (error) {
       dispatch({
         type: "HOUSE_ERROR",
@@ -78,8 +111,22 @@ export const HouseProvider = ({ children }) => {
 
   async function deleteHouse(houseId) {
     try {
-      await api.delete("houses/" + houseId);
-      getHouses();
+      if (isAuthenticated) {
+        console.log(houseId);
+        const token = await getAccessTokenSilently();
+        const options = {
+          method: "delete",
+          url: "http://127.0.0.1:8000/api/house/updateordelete",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-type": "application/json",
+          },
+        };
+        await axios(options);
+        getHouses();
+      } else {
+        console.log("You are not authenticated to make this request");
+      }
     } catch (error) {
       dispatch({
         type: "HOUSE_ERROR",

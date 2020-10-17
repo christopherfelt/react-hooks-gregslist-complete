@@ -3,7 +3,6 @@ import { useHistory, Link } from "react-router-dom";
 
 const Car = ({ car }) => {
   //   const history = useHistory();
-
   return (
     <div className="card">
       <div className="card-body">
@@ -14,6 +13,7 @@ const Car = ({ car }) => {
           <p className="card-text">{car.description}</p>
         </Link>
         <h5 className="card-title">{car.price}</h5>
+        <h6 className="card-title">{car.created_by}</h6>
         {/* <button className="btn btn-primary" onClick={() => history.push(`/cardetail/${car.id}`)}>Go to Details</button> */}
       </div>
     </div>

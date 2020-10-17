@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import { useHistory } from "react-router-dom";
-import "../components/carStyle.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
+import "../components/carStyle.css";
 import Item from "../components/item";
 
 const CarDetail = ({
@@ -11,6 +12,7 @@ const CarDetail = ({
   },
 }) => {
   const { car, getCar, updateCar, deleteCar } = useContext(GlobalContext);
+  const { isAuthenticated, user } = useAuth0();
 
   useEffect(() => {
     getCar(carId);
@@ -77,14 +79,16 @@ const CarDetail = ({
                   alt=""
                 ></img>
               </div>
-              <div className="align-self-center button">
-                <button className="btn btn-danger" onClick={deleteHandler}>
-                  Delete
-                </button>
-              </div>
+              {isAuthenticated && user.name === car.created_by && (
+                <div className="align-self-center button">
+                  <button className="btn btn-danger" onClick={deleteHandler}>
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
-
             <Item
+              expose={car.created_by === (isAuthenticated && user.name)}
               edit={editValues.descriptionEdit}
               itemName={"Description"}
               itemValue={car.description}
@@ -95,6 +99,7 @@ const CarDetail = ({
             />
 
             <Item
+              expose={car.created_by === (isAuthenticated && user.name)}
               edit={editValues.makeEdit}
               itemName={"Make"}
               itemValue={car.make}
@@ -104,6 +109,7 @@ const CarDetail = ({
             />
 
             <Item
+              expose={car.created_by === (isAuthenticated && user.name)}
               edit={editValues.modelEdit}
               itemName={"Model"}
               itemValue={car.model}
@@ -113,6 +119,7 @@ const CarDetail = ({
             />
 
             <Item
+              expose={car.created_by === (isAuthenticated && user.name)}
               edit={editValues.priceEdit}
               itemName={"Price"}
               itemValue={car.price}
@@ -122,6 +129,7 @@ const CarDetail = ({
             />
 
             <Item
+              expose={car.created_by === (isAuthenticated && user.name)}
               edit={editValues.yearEdit}
               itemName={"Year"}
               itemValue={car.year}
