@@ -106,6 +106,7 @@ const CarDetail = ({
               inputValue={allValues.make}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
+              onSubmitEvent={submitHandler}
             />
 
             <Item
@@ -116,6 +117,7 @@ const CarDetail = ({
               inputValue={allValues.model}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
+              onSubmitEvent={submitHandler}
             />
 
             <Item
@@ -126,6 +128,7 @@ const CarDetail = ({
               inputValue={allValues.price}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
+              onSubmitEvent={submitHandler}
             />
 
             <Item
@@ -136,6 +139,7 @@ const CarDetail = ({
               inputValue={allValues.year}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
+              onSubmitEvent={submitHandler}
             />
           </div>
         </div>

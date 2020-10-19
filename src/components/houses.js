@@ -2,8 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { HouseContext } from "../context/HouseState";
 import House from "./house";
 import ItemInput from "./newItemInput";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Houses = () => {
+  const { isAuthenticated, user } = useAuth0();
+
   const initialState = {
     year: 0,
     bedrooms: 0,
@@ -32,53 +35,55 @@ const Houses = () => {
 
   return (
     <div>
-      <form className="form-inline m-2" onSubmit={submitHandler}>
-        <ItemInput
-          label={"Year"}
-          inputType={"integer"}
-          inputName={"year"}
-          inputValue={allValues.year}
-          onChangeEvent={changeHandler}
-        />
-        <ItemInput
-          label={"Bedrooms"}
-          inputType={"integer"}
-          inputName={"bedrooms"}
-          inputValue={allValues.bedrooms}
-          onChangeEvent={changeHandler}
-        />
-        <ItemInput
-          label={"Description"}
-          inputType={"text"}
-          inputName={"description"}
-          inputValue={allValues.description}
-          onChangeEvent={changeHandler}
-        />
-        <ItemInput
-          label={"Image Url"}
-          inputType={"text"}
-          inputName={"imgUrl"}
-          inputValue={allValues.imgUrl}
-          onChangeEvent={changeHandler}
-        />
-        <ItemInput
-          label={"Price"}
-          inputType={"integer"}
-          inputName={"price"}
-          inputValue={allValues.price}
-          onChangeEvent={changeHandler}
-        />
-        <ItemInput
-          label={"Level"}
-          inputType={"integer"}
-          inputName={"levels"}
-          inputValue={allValues.levels}
-          onChangeEvent={changeHandler}
-        />
-        <button className="btn btn-secondary" type="submit">
-          Submit
-        </button>
-      </form>
+      {isAuthenticated && (
+        <form className="form-inline m-2" onSubmit={submitHandler}>
+          <ItemInput
+            label={"Year"}
+            inputType={"integer"}
+            inputName={"year"}
+            inputValue={allValues.year}
+            onChangeEvent={changeHandler}
+          />
+          <ItemInput
+            label={"Bedrooms"}
+            inputType={"integer"}
+            inputName={"bedrooms"}
+            inputValue={allValues.bedrooms}
+            onChangeEvent={changeHandler}
+          />
+          <ItemInput
+            label={"Description"}
+            inputType={"text"}
+            inputName={"description"}
+            inputValue={allValues.description}
+            onChangeEvent={changeHandler}
+          />
+          <ItemInput
+            label={"Image Url"}
+            inputType={"text"}
+            inputName={"imgUrl"}
+            inputValue={allValues.imgUrl}
+            onChangeEvent={changeHandler}
+          />
+          <ItemInput
+            label={"Price"}
+            inputType={"integer"}
+            inputName={"price"}
+            inputValue={allValues.price}
+            onChangeEvent={changeHandler}
+          />
+          <ItemInput
+            label={"Level"}
+            inputType={"integer"}
+            inputName={"levels"}
+            inputValue={allValues.levels}
+            onChangeEvent={changeHandler}
+          />
+          <button className="btn btn-secondary" type="submit">
+            Submit
+          </button>
+        </form>
+      )}
       <div className="card-columns">
         {houses.map((house) => (
           <House key={house.id} house={house} />

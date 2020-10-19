@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { HouseContext } from "../context/HouseState";
 import { useHistory } from "react-router-dom";
 import "../components/carStyle.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import Item from "../components/item";
 
@@ -11,6 +12,7 @@ const HouseDetail = ({
   },
 }) => {
   const { getHouse } = useContext(HouseContext);
+  const { isAuthenticated, user } = useAuth0();
 
   useEffect(() => {
     getHouse(houseId);
@@ -81,14 +83,17 @@ const HouseDetail = ({
                   alt=""
                 ></img>
               </div>
-              <div className="align-self-center button">
-                <button className="btn btn-danger" onClick={deleteHandler}>
-                  Delete
-                </button>
-              </div>
+              {isAuthenticated && user.name === house.created_by && (
+                <div className="align-self-center button">
+                  <button className="btn btn-danger" onClick={deleteHandler}>
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
 
             <Item
+              expose={house.created_by === (isAuthenticated && user.name)}
               edit={editValues.descriptionEdit}
               itemName={"Description"}
               itemValue={house.description}
@@ -99,40 +104,52 @@ const HouseDetail = ({
             />
 
             <Item
+              expose={house.created_by === (isAuthenticated && user.name)}
               edit={editValues.bedroomsEdit}
               itemName={"bedrooms"}
               itemValue={house.bedrooms}
               inputValue={allValues.bedrooms}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
+              onSubmitEvent={submitHandler}
             />
 
             <Item
+              expose={house.created_by === (isAuthenticated && user.name)}
               edit={editValues.bathroomsEdit}
               itemName={"bathrooms"}
               itemValue={house.bathrooms}
               inputValue={allValues.bathrooms}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
+              onSubmitEvent={submitHandler}
             />
 
             <Item
+              expose={house.created_by === (isAuthenticated && user.name)}
               edit={editValues.priceEdit}
               itemName={"Price"}
               itemValue={house.price}
               inputValue={allValues.price}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
+              onSubmitEvent={submitHandler}
             />
 
             <Item
+              expose={house.created_by === (isAuthenticated && user.name)}
               edit={editValues.yearEdit}
               itemName={"Year"}
               itemValue={house.year}
               inputValue={allValues.year}
               onEditEvent={editHandler}
               onChangeEvent={changeHandler}
+              onSubmitEvent={submitHandler}
             />
+            <div>
+              <h6 className="d-inline mr-2">Created By:</h6>
+              <p className="d-inline m-0">{house.created_by}</p>
+            </div>
           </div>
         </div>
       </div>

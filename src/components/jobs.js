@@ -2,8 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { JobContext } from "../context/JobState";
 import Job from "./job";
 import ItemInput from "./newItemInput";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Jobs = () => {
+  const { isAuthenticated, user } = useAuth0();
+
   const initialState = {
     company: "",
     description: "",
@@ -32,53 +35,55 @@ const Jobs = () => {
 
   return (
     <div>
-      <form className="form-inline m-2" onSubmit={submitHandler}>
-        <ItemInput
-          label={"Company"}
-          inputType={"integer"}
-          inputName={"company"}
-          inputValue={allValues.company}
-          onChangeEvent={changeHandler}
-        />
-        <ItemInput
-          label={"Description"}
-          inputType={"text"}
-          inputName={"description"}
-          inputValue={allValues.description}
-          onChangeEvent={changeHandler}
-        />
-        <ItemInput
-          label={"Job Title"}
-          inputType={"text"}
-          inputName={"jobTitle"}
-          inputValue={allValues.jobTitle}
-          onChangeEvent={changeHandler}
-        />
-        <ItemInput
-          label={"Hours"}
-          inputType={"float"}
-          inputName={"hours"}
-          inputValue={allValues.hours}
-          onChangeEvent={changeHandler}
-        />
-        <ItemInput
-          label={"Rate"}
-          inputType={"integer"}
-          inputName={"rate"}
-          inputValue={allValues.rate}
-          onChangeEvent={changeHandler}
-        />
-        <ItemInput
-          label={"Image Url"}
-          inputType={"text"}
-          inputName={"imgUrl"}
-          inputValue={allValues.imgUrl}
-          onChangeEvent={changeHandler}
-        />
-        <button className="btn btn-secondary" type="submit">
-          Submit
-        </button>
-      </form>
+      {isAuthenticated && (
+        <form className="form-inline m-2" onSubmit={submitHandler}>
+          <ItemInput
+            label={"Company"}
+            inputType={"integer"}
+            inputName={"company"}
+            inputValue={allValues.company}
+            onChangeEvent={changeHandler}
+          />
+          <ItemInput
+            label={"Description"}
+            inputType={"text"}
+            inputName={"description"}
+            inputValue={allValues.description}
+            onChangeEvent={changeHandler}
+          />
+          <ItemInput
+            label={"Job Title"}
+            inputType={"text"}
+            inputName={"jobTitle"}
+            inputValue={allValues.jobTitle}
+            onChangeEvent={changeHandler}
+          />
+          <ItemInput
+            label={"Hours"}
+            inputType={"float"}
+            inputName={"hours"}
+            inputValue={allValues.hours}
+            onChangeEvent={changeHandler}
+          />
+          <ItemInput
+            label={"Rate"}
+            inputType={"integer"}
+            inputName={"rate"}
+            inputValue={allValues.rate}
+            onChangeEvent={changeHandler}
+          />
+          <ItemInput
+            label={"Image Url"}
+            inputType={"text"}
+            inputName={"imgUrl"}
+            inputValue={allValues.imgUrl}
+            onChangeEvent={changeHandler}
+          />
+          <button className="btn btn-secondary" type="submit">
+            Submit
+          </button>
+        </form>
+      )}
       <div className="card-columns">
         {jobs.map((job) => (
           <Job key={job.id} job={job} />

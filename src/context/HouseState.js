@@ -61,7 +61,7 @@ export const HouseProvider = ({ children }) => {
         const token = await getAccessTokenSilently();
         const options = {
           method: "post",
-          url: "http://127.0.0.1:8000/api/house/create",
+          url: "http://127.0.0.1:8000/api/houses/create",
           data: houseData,
           headers: {
             Authorization: "Bearer " + token,
@@ -88,7 +88,10 @@ export const HouseProvider = ({ children }) => {
         const token = await getAccessTokenSilently();
         const options = {
           method: "put",
-          url: "http://127.0.0.1:8000/api/house/updateordelete",
+          url:
+            "http://127.0.0.1:8000/api/houses/" +
+            houseData.id +
+            "/updateordelete",
           data: houseData,
           headers: {
             Authorization: "Bearer " + token,
@@ -116,7 +119,8 @@ export const HouseProvider = ({ children }) => {
         const token = await getAccessTokenSilently();
         const options = {
           method: "delete",
-          url: "http://127.0.0.1:8000/api/house/updateordelete",
+          url:
+            "http://127.0.0.1:8000/api/houses/" + houseId + "/updateordelete",
           headers: {
             Authorization: "Bearer " + token,
             "Content-type": "application/json",

@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import JobAppReducer from "./JobAppReducer";
 import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const initialState = {
   job: {},
@@ -20,6 +21,7 @@ export const JobContext = createContext(initialState);
 
 export const JobProvider = ({ children }) => {
   const [state, dispatch] = useReducer(JobAppReducer, initialState);
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   async function getJobs() {
     try {
@@ -53,11 +55,26 @@ export const JobProvider = ({ children }) => {
 
   async function createJob(jobData) {
     try {
-      await api.post("jobs/", jobData);
-      getJobs();
+      if (isAuthenticated) {
+        console.log(jobData);
+        const token = await getAccessTokenSilently();
+        const options = {
+          method: "post",
+          url: "http://127.0.0.1:8000/api/jobs/create",
+          data: jobData,
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-type": "application/json",
+          },
+        };
+        await axios(options);
+        getJobs();
+      } else {
+        console.log("You are not authenticated to make this request");
+      }
     } catch (error) {
       dispatch({
-        type: "JOB_ERROR",
+        type: "Job_ERROR",
         payload: error,
       });
     }
@@ -65,11 +82,28 @@ export const JobProvider = ({ children }) => {
 
   async function updateJob(jobData) {
     try {
-      await api.put("jobs/" + jobData.id, jobData);
-      getJob(jobData.id);
+      if (isAuthenticated) {
+        console.log(jobData);
+        const token = await getAccessTokenSilently();
+        const options = {
+          method: "put",
+          url:
+            "http://127.0.0.1:8000/api/jobs/" + jobData.id + "/updateordelete",
+          data: jobData,
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-type": "application/json",
+          },
+        };
+        await axios(options);
+        getJob(jobData.id);
+        getJobs();
+      } else {
+        console.log("You are not authenticated to make this request");
+      }
     } catch (error) {
       dispatch({
-        type: "JOB_ERROR",
+        type: "Job_ERROR",
         payload: error,
       });
     }
@@ -77,8 +111,22 @@ export const JobProvider = ({ children }) => {
 
   async function deleteJob(jobId) {
     try {
-      await api.delete("jobs/" + jobId);
-      getJobs();
+      if (isAuthenticated) {
+        console.log(jobId);
+        const token = await getAccessTokenSilently();
+        const options = {
+          method: "delete",
+          url: "http://127.0.0.1:8000/api/jobs/" + jobId + "/updateordelete",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-type": "application/json",
+          },
+        };
+        await axios(options);
+        getJobs();
+      } else {
+        console.log("You are not authenticated to make this request");
+      }
     } catch (error) {
       dispatch({
         type: "JOB_ERROR",
